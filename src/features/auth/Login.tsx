@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
+import "./login.css";
+
+function showPassword() {
+  const inp = document.getElementById('password') as HTMLInputElement | null;
+  const btn = document.getElementById('toggleVisibility') as HTMLInputElement | null;
+
+  if (inp && btn) {
+    if (inp.type === 'password') {
+      inp.type = 'text';
+    } else {
+      inp.type = 'password';
+    }
+  }
+}
 
 export function Login() {
   const [loading, setLoading] = useState(false);
@@ -24,21 +38,22 @@ export function Login() {
           password,
         });
         if (error) throw error;
-        alert('Account created successfully! You can now log in.');
+        alert('Account created successfully, praise the sun!');
       }
     } catch (error: any) {
-      alert(`Authentication failed: ${error.message || error.error_description || 'Unknown error'}`);
+      alert(`Authentication failed!! ${error.message || error.error_description || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h1 style={{ marginBottom: '1.5rem', color: '#1e293b', textAlign: 'center' }}>
-        {isLogin ? 'Login' : 'Sign Up'}
-      </h1>
-      <form onSubmit={handleAuth} className="login-form">
+    <div className='login'>
+      <span className='loginTitle'>
+        {isLogin ? 'Login' : 'Register'}
+      </span>
+      <form onSubmit={handleAuth} className="loginForm">
+        <label>Email</label>
         <input
           className="blog-form-input"
           type="email"
@@ -47,31 +62,29 @@ export function Login() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        <label>Password</label>
         <input
           className="blog-form-input"
+          id='password'
           type="password"
           placeholder="Your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button className="btn-primary" disabled={loading}>
-          {loading ? 'Loading...' : isLogin ? 'Sign In' : 'Sign Up'}
+        <div>
+          <input type='checkbox' id='toggleVisibility' onClick={showPassword} />
+          <label htmlFor='toggleVisibility'>Show password</label>
+        </div>
+        <button className="loginButton" disabled={loading}>
+          {loading ? 'Please wait!' : isLogin ? 'Sign In' : 'Sign Up'}
         </button>
       </form>
       <button
-        style={{ 
-          background: 'none', 
-          border: 'none', 
-          color: '#3b82f6', 
-          cursor: 'pointer', 
-          textDecoration: 'underline',
-          marginTop: '1rem',
-          width: '100%'
-        }}
+        className='loginRegisterButton'
         onClick={() => setIsLogin(!isLogin)}
       >
-        {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Login'}
+        {isLogin ? 'Sign Up!' : 'Login!'}
       </button>
     </div>
   );

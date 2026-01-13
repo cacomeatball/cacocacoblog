@@ -4,6 +4,7 @@ import { selectSession, setSession, clearSession } from './features/auth/authSli
 import { Login } from './features/auth/Login';
 import { BlogList } from './features/blog/BlogList';
 import { supabase } from './lib/supabaseClient';
+import TopBar from './features/topbar/TopBar';
 
 function App() {
   const session = useAppSelector(selectSession);
@@ -45,7 +46,7 @@ function App() {
     return (
       <div className="App">
         <header className="blog-header">
-          <h1>My Blog App</h1>
+          <h1>cacocacoblog!</h1>
           <p style={{ margin: 0, opacity: 0.9 }}>Please log in to continue</p>
         </header>
         <div className="login-container">
@@ -57,8 +58,9 @@ function App() {
 
   return (
     <div className="App">
+      <TopBar />
       <header className="blog-header">
-        <h1>My Blog App</h1>
+        <h1>cacocacoblog!</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <span className="welcome-message">Welcome, {session.user?.email}</span>
           <button onClick={handleLogout} className="btn-logout">

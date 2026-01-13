@@ -1,0 +1,57 @@
+.login{
+    height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+            rgba(255,255,255,0.5),
+            rgba(255,255,255,0.5)
+        ),
+        url("https://pbs.twimg.com/media/GBiM0qGXUAAQhzI?format=jpg&name=medium");
+    background-size: cover;
+}
+
+.loginTitle{
+    font-family: "Karla", "sans-serif";
+    font-size: 50px;
+}
+
+.loginForm{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.loginForm > label{
+    font-family: "Karla", "sans-serif";
+    margin: 10px 0;
+}
+
+.loginInput{
+    padding: 10px;
+    background-color: aliceblue;
+    border: none;
+}
+
+.loginButton{
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: cadetblue;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.loginRegisterButton{
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: teal;
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+}
