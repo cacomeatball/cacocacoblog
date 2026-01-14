@@ -3,8 +3,10 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectPosts, selectLoading, setPosts, addPost, updatePost, removePost, setLoading, setEditingPost, type BlogPost } from './blogSlice';
 import { selectUser } from '../auth/authSlice';
 import { supabase } from '../../lib/supabaseClient';
-import { BlogForm } from './BlogForm';
+import { BlogForm } from './write/BlogForm';
 import { BlogPostComponent } from './BlogPostComponent';
+import { Link, Routes, Route, useNavigate } from 'react-router-dom';
+import './bloglist.css';
 
 export function BlogList() {
   const dispatch = useAppDispatch();
@@ -12,6 +14,7 @@ export function BlogList() {
   const loading = useAppSelector(selectLoading);
   const user = useAppSelector(selectUser);
   const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPosts();
@@ -36,7 +39,7 @@ export function BlogList() {
 
   const handleEdit = (post: BlogPost) => {
     dispatch(setEditingPost(post));
-    setShowForm(true);
+    navigate('/write');
   };
 
   const handleDelete = async (id: string) => {
@@ -66,7 +69,7 @@ export function BlogList() {
 
   const handleCreateNew = () => {
     dispatch(setEditingPost(null));
-    setShowForm(true);
+    navigate('/write');
   };
 
   if (loading && posts.length === 0) {
@@ -76,10 +79,10 @@ export function BlogList() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ margin: 0, color: '#1e293b' }}>Blog Posts</h1>
+        <h1 className='blogposts-header'>Blog Posts</h1>
         {user && !showForm && (
           <button onClick={handleCreateNew} className="btn-primary">
-            New Post
+            Create New Post
           </button>
         )}
       </div>
@@ -94,7 +97,7 @@ export function BlogList() {
           <p style={{ margin: 0 }}>{user ? 'Create your first post!' : 'Please log in to create posts.'}</p>
         </div>
       ) : (
-        <div>
+        <div className='posts'>
           {posts.map(post => (
             <BlogPostComponent
               key={post.id}

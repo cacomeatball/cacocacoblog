@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAppSelector } from '../../app/hooks';
-import { selectUser } from '../auth/authSlice';
-import { selectEditingPost } from './blogSlice';
-import { supabase } from '../../lib/supabaseClient';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../auth/authSlice';
+import { selectEditingPost } from '../blogSlice';
+import { supabase } from '../../../lib/supabaseClient';
 
 interface BlogFormProps {
   onPostCreated: () => void;

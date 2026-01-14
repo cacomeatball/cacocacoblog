@@ -5,6 +5,8 @@ import { Login } from './features/auth/Login';
 import { BlogList } from './features/blog/BlogList';
 import { supabase } from './lib/supabaseClient';
 import TopBar from './features/topbar/TopBar';
+import './app.css';
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
 
 function App() {
   const session = useAppSelector(selectSession);
@@ -30,8 +32,10 @@ function App() {
   }, [dispatch]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    dispatch(clearSession());
+    if (window.confirm('Are you sure you want to log out?')) {
+      await supabase.auth.signOut();
+      dispatch(clearSession());
+    }
   };
 
   if (loading) {
@@ -58,7 +62,6 @@ function App() {
 
   return (
     <div className="App">
-      <TopBar />
       <header className="blog-header">
         <h1>cacocacoblog!</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

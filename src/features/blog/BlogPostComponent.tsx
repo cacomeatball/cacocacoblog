@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { selectUser } from '../auth/authSlice';
 import type { BlogPost } from './blogSlice';
+import './bloglist.css'
 
 interface BlogPostComponentProps {
   post: BlogPost;
@@ -17,7 +18,7 @@ export function BlogPostComponent({ post, onEdit, onDelete }: BlogPostComponentP
   return (
     <article className="blog-post">
       <header>
-        <h2>{post.title}</h2>
+        <h2 className='postTitle'>{post.title}</h2>
         <div className="blog-post-meta">Published on {createdAt}</div>
       </header>
       

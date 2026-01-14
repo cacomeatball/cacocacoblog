@@ -1,0 +1,40 @@
+.blogposts-header{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Karla', 'sans-serif';
+}
+
+.posts{
+    display: flex;
+    flex-direction: column;
+    flex: 9;
+    margin: 20px;
+}
+
+.postTitle{
+    font-family: 'Karla', 'sans-serif';
+    font-style: 24px;
+    font-weight: 800;
+    margin-top: 15px;
+}
+
+.blog-post-meta{
+    font-family: 'Karla', 'sans-serif';
+    font-style: italic;
+    font-size: 13px;
+    color: cadetblue;
+}
+
+.blog-post-content{
+    font-size: 14px;
+    color: #444;
+    line-height: 24px;
+    margin-top: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+}
