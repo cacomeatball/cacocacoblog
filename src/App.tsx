@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 import { selectSession, setSession } from './features/auth/authSlice';
 import { supabase } from './lib/supabaseClient';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { HashRouter, Routes, Route} from 'react-router-dom';
 import './app.css';
 
 import { Write } from './features/blog/write/Write'
@@ -42,14 +42,14 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <TopBar />
       <Routes>
         <Route path="/" element={session ? <Home /> : <Login />} />
         <Route path='/write' element={session ? <Write onPostCreated={() => {}} onCancel={() => {}} /> : <Login />} />
         <Route path='/login' element={session ? <Home /> : <Login />}></Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
