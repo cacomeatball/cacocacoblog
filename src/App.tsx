@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from './app/hooks';
-import { selectSession, setSession, clearSession } from './features/auth/authSlice';
-import { Login } from './features/auth/Login';
-import { BlogList } from './features/blog/BlogList';
+import { selectSession, setSession } from './features/auth/authSlice';
 import { supabase } from './lib/supabaseClient';
-import TopBar from './features/topbar/TopBar';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import './app.css';
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
+
+import { Write } from './features/blog/write/Write'
+import { Login } from './features/auth/Login'
+import TopBar from './features/topbar/TopBar'
+import Home from "./features/home/Home";
 
 function App() {
   const session = useAppSelector(selectSession);
@@ -31,13 +33,6 @@ function App() {
     return () => subscription.unsubscribe();
   }, [dispatch]);
 
-  const handleLogout = async () => {
-    if (window.confirm('Are you sure you want to log out?')) {
-      await supabase.auth.signOut();
-      dispatch(clearSession());
-    }
-  };
-
   if (loading) {
     return (
       <div className="App">
@@ -46,35 +41,15 @@ function App() {
     )
   }
 
-  if (!session) {
-    return (
-      <div className="App">
-        <header className="blog-header">
-          <h1>cacocacoblog!</h1>
-          <p style={{ margin: 0, opacity: 0.9 }}>Please log in to continue</p>
-        </header>
-        <div className="login-container">
-          <Login />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="App">
-      <header className="blog-header">
-        <h1>cacocacoblog!</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span className="welcome-message">Welcome, {session.user?.email}</span>
-          <button onClick={handleLogout} className="btn-logout">
-            Logout
-          </button>
-        </div>
-      </header>
-      <main className="blog-content">
-        <BlogList />
-      </main>
-    </div>
+    <BrowserRouter>
+      <TopBar />
+      <Routes>
+        <Route path="/" element={session ? <Home /> : <Login />} />
+        <Route path='/write' element={session ? <Write onPostCreated={() => {}} onCancel={() => {}} /> : <Login />} />
+        <Route path='/login' element={session ? <Home /> : <Login />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

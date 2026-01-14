@@ -35,6 +35,33 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 7;
     -webkit-box-orient: vertical;
+}
+
+.pagination{
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    margin: 16px 0 32px 0;
+}
+
+.page-btn{
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Karla', 'sans-serif';
+}
+
+.page-btn:disabled{
+    opacity: 0.5;
+    cursor: default;
+}
+
+.page-btn.active{
+    background: #0ea5a4;
+    color: #fff;
+    border-color: #0ea5a4;
 }

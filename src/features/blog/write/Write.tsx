@@ -48,7 +48,7 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
         // Create new post
         const { error } = await supabase
           .from('posts')
-          .insert([{ title, content, user_id: user.id }]);
+          .insert([{ title, content, user_id: user.id, username: user.user_metadata.username }]);
         
         if (error) throw error;
       }
@@ -71,13 +71,10 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
     <div className="write">
         <img
             className="writeImg" 
-            src="https://pbs.twimg.com/media/G9OARh8XQAA1MbU?format=jpg&name=medium" 
+            src="https://info-ongeki.sega.jp/wp-content/uploads/2022/07/d8749dbe9c25cef252198448aa20f742.jpg" 
             alt="" />
         <form onSubmit={handleSubmit} className="writeForm">
             <div className="writeFormGroup">
-                <label htmlFor="fileInput">
-                    <i className="writeIcon fa-solid fa-plus" style={{cursor:"pointer"}}></i>
-                </label>
                 <input type="file" id="fileInput" style={{display:"none"}} />
                 <input 
                     type="text" 

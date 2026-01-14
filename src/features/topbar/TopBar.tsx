@@ -1,13 +1,15 @@
 import "./topbar.css"
-import { Link } from "react-router-dom";
 
 export default function topbar() {
   return (
     <div className="top">
         <div className="topLeft">
-            <i className="topIcon fa-brands fa-square-facebook"></i>
+            <a className="link" href='https://x.com/CacoMeatBall'>
             <i className="topIcon fa-brands fa-square-twitter"></i>
+            </a>
+            <a className="link" href='https://bsky.app/profile/cacomeatball.bsky.social'>
             <i className="topIcon fa-brands fa-square-bluesky"></i>
+            </a>
         </div>
     </div>
   )

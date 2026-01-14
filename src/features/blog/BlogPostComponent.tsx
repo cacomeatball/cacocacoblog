@@ -19,7 +19,7 @@ export function BlogPostComponent({ post, onEdit, onDelete }: BlogPostComponentP
     <article className="blog-post">
       <header>
         <h2 className='postTitle'>{post.title}</h2>
-        <div className="blog-post-meta">Published on {createdAt}</div>
+        <div className="blog-post-meta">Published on {createdAt}, by {post.username}</div>
       </header>
       
       <div className="blog-post-content">

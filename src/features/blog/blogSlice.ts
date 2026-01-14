@@ -7,6 +7,7 @@ export interface BlogPost {
   title: string;
   content: string;
   user_id: string;
+  username: string;
 }
 
 interface BlogState {

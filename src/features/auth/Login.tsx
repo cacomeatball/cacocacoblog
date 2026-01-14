@@ -17,6 +17,7 @@ function showPassword() {
 
 export function Login() {
   const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
@@ -27,15 +28,20 @@ export function Login() {
     
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         if (error) throw error;
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            data: {
+              username,
+            },
+          },
         });
         if (error) throw error;
         alert('Account created successfully, praise the sun!');
@@ -53,6 +59,17 @@ export function Login() {
         {isLogin ? 'Login' : 'Register'}
       </span>
       <form onSubmit={handleAuth} className="loginForm">
+        {isLogin ? null : <label>Username</label>}
+        {isLogin ? null :
+          <input
+            className="blog-form-input"
+            type="text"
+            placeholder="Your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        }
         <label>Email</label>
         <input
           className="blog-form-input"
@@ -62,6 +79,7 @@ export function Login() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        
         <label>Password</label>
         <input
           className="blog-form-input"
