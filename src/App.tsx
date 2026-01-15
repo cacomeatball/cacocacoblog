@@ -9,6 +9,7 @@ import { Write } from './features/blog/write/Write'
 import { Login } from './features/auth/Login'
 import TopBar from './features/topbar/TopBar'
 import Home from "./features/home/Home";
+import { SinglePostPage } from './features/blog/post/SinglePostPage';
 
 function App() {
   const session = useAppSelector(selectSession);
@@ -46,6 +47,7 @@ function App() {
       <TopBar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path='/post/:id' element={<SinglePostPage />} />
         <Route path='/write' element={session ? <Write onPostCreated={() => {}} onCancel={() => {}} /> : <Login />} />
         <Route path='/login' element={session ? <Home /> : <Login />}></Route>
       </Routes>

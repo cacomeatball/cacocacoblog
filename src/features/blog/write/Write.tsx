@@ -6,6 +6,7 @@ import { selectUser } from '../../auth/authSlice';
 import { selectEditingPost } from '../blogSlice';
 import { supabase } from '../../../lib/supabaseClient';
 import { useNavigate } from 'react-router-dom';
+import { uploadBlogImage } from '../../../lib/imageUpload';
 
 interface BlogFormProps {
   onPostCreated: () => void;
@@ -17,6 +18,9 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
   const editingPost = useAppSelector(selectEditingPost);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -24,11 +28,28 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
     if (editingPost) {
       setTitle(editingPost.title);
       setContent(editingPost.content);
+      setImageUrl(editingPost.image_url || '');
+      setImagePreview(editingPost.image_url || '');
     } else {
       setTitle('');
       setContent('');
+      setImageUrl('');
+      setImageFile(null);
+      setImagePreview('');
     }
   }, [editingPost]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,19 +57,30 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
 
     setLoading(true);
     try {
+      let finalImageUrl = imageUrl;
+
+      // Upload new image if selected
+      if (imageFile) {
+        console.log('Uploading image:', imageFile.name);
+        finalImageUrl = await uploadBlogImage(imageFile, user.id);
+        console.log('Image URL received:', finalImageUrl);
+      }
+
       if (editingPost) {
         // Update existing post
+        console.log('Updating post with image_url:', finalImageUrl);
         const { error } = await supabase
           .from('posts')
-          .update({ title, content })
+          .update({ title, content, image_url: finalImageUrl || null })
           .eq('id', editingPost.id);
         
         if (error) throw error;
       } else {
         // Create new post
+        console.log('Creating post with image_url:', finalImageUrl);
         const { error } = await supabase
           .from('posts')
-          .insert([{ title, content, user_id: user.id, username: user.user_metadata.username }]);
+          .insert([{ title, content, user_id: user.id, username: user.user_metadata.username, image_url: finalImageUrl || null }]);
         
         if (error) throw error;
       }
@@ -56,6 +88,9 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
       onPostCreated();
       setTitle('');
       setContent('');
+      setImageFile(null);
+      setImageUrl('');
+      setImagePreview('');
     } catch (error: any) {
       alert(`Oops! ${editingPost ? 'updating' : 'creating'} post: ${error.message}`);
     } finally {
@@ -85,6 +120,23 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
                     autoFocus={true}
                     required
                 />
+            </div>
+            <div style={{ marginBottom: '1rem' }}>
+              <label htmlFor="image" style={{ display: 'block', marginBottom: '0.5rem' }}>
+                Featured Image:
+              </label>
+              <input
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="blog-form-input"
+              />
+              {imagePreview && (
+                <div style={{ marginTop: '0.5rem' }}>
+                  <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '200px' }} />
+                </div>
+              )}
             </div>
             <div className="writeFormGroup">
                 <textarea 

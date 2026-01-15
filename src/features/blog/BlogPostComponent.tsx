@@ -1,8 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { selectUser } from '../auth/authSlice';
 import type { BlogPost } from './blogSlice';
-import './bloglist.css'
+import './bloglist.css';
 
 interface BlogPostComponentProps {
   post: BlogPost;
@@ -14,13 +15,26 @@ export function BlogPostComponent({ post, onEdit, onDelete }: BlogPostComponentP
   const user = useAppSelector(selectUser);
   const isAuthor = user?.id === post.user_id;
   const createdAt = new Date(post.created_at).toLocaleDateString();
+  const navigate = useNavigate();
+
+  const handleTitleClick = () => {
+    navigate(`/post/${post.id}`);
+  };
 
   return (
     <article className="blog-post">
       <header>
-        <h2 className='postTitle'>{post.title}</h2>
+        <h2 className='postTitle' onClick={handleTitleClick} style={{ cursor: 'pointer' }}>{post.title}</h2>
         <div className="blog-post-meta">Published on {createdAt}, by {post.username}</div>
       </header>
+      
+      {post.image_url && (
+        <img 
+          src={post.image_url} 
+          alt={post.title}
+          style={{ width: '100%', maxHeight: '400px', objectFit: 'cover', marginBottom: '1rem' }}
+        />
+      )}
       
       <div className="blog-post-content">
         {post.content}

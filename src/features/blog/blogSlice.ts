@@ -8,6 +8,7 @@ export interface BlogPost {
   content: string;
   user_id: string;
   username: string;
+  image_url?: string;
 }
 
 interface BlogState {
