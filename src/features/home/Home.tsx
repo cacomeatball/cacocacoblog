@@ -55,7 +55,7 @@ function Home() {
         <header className="blog-header">
           <h1>cacocacoblog!</h1>
           <div className='welcomeMessage'>
-            <span className="welcome-message">Please log in to continue.</span>
+            <span className="welcome-message">Welcome, Guest!</span>
             <button onClick={handleLogin} className="btn-login">
               Login
             </button>

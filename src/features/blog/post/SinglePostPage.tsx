@@ -118,13 +118,13 @@ export function SinglePostPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
-      <button onClick={handleGoBack} className="btn-goback" style={{ marginBottom: '2rem' }}>
+      <button onClick={handleGoBack} className="btn-goback">
         ← Back to Posts
       </button>
 
       <article className="blog-post">
         <header>
-          <h1 className="postTitle">{post.title}</h1>
+          <h1 className="singlePostTitle">{post.title}</h1>
           <div className="blog-post-meta">Published on {createdAt}, by {post.username}</div>
         </header>
 
@@ -132,7 +132,7 @@ export function SinglePostPage() {
         <img 
           src={post.image_url} 
           alt={post.title}
-          style={{ width: '100%', maxHeight: '400px', objectFit: 'cover', marginBottom: '1rem' }}
+          className='singlePostImg'
         />
         )}
 
@@ -140,7 +140,7 @@ export function SinglePostPage() {
           {post.content}
         </div>
 
-        {isAuthor && (
+        {isAuthor ? (
           <footer className="postFooter">
             <button onClick={handleEdit} className="btn-success">
               <i className="singlePostIcon fa-regular fa-pen-to-square"></i> Edit
@@ -148,6 +148,10 @@ export function SinglePostPage() {
             <button onClick={handleDelete} className="btn-danger">
               <i className="singlePostIcon fa-regular fa-trash-can"></i> Delete
             </button>
+          </footer>
+        ) : (
+          <footer className="blog-post-meta" style={{marginTop: '1rem'}}>
+            <em>You're either a Guest, or not the author of this post.</em>
           </footer>
         )}
       </article>

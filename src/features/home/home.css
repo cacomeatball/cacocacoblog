@@ -18,3 +18,14 @@
     align-items: center;
     font-family: 'Karla', 'sans-serif';
 }
+
+.btn-login, .btn-logout{
+    background-color: cadetblue;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: '2rem';
+}

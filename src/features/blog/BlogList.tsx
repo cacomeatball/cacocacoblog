@@ -86,7 +86,7 @@ export function BlogList() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <h1 className='blogposts-header'>Blog Posts</h1>
         {user && !showForm && (
           <button onClick={handleCreateNew} className="btn-primary">
