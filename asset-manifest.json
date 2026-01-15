@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/cacocacoblog/static/css/main.3e169e08.css",
-    "main.js": "/cacocacoblog/static/js/main.d1e572c8.js",
+    "main.css": "/cacocacoblog/static/css/main.9cb3edf2.css",
+    "main.js": "/cacocacoblog/static/js/main.6ab62af7.js",
     "static/media/login-cover.jpg": "/cacocacoblog/static/media/login-cover.0545e8fa0244c241a312.jpg",
     "index.html": "/cacocacoblog/index.html",
-    "main.3e169e08.css.map": "/cacocacoblog/static/css/main.3e169e08.css.map",
-    "main.d1e572c8.js.map": "/cacocacoblog/static/js/main.d1e572c8.js.map"
+    "main.9cb3edf2.css.map": "/cacocacoblog/static/css/main.9cb3edf2.css.map",
+    "main.6ab62af7.js.map": "/cacocacoblog/static/js/main.6ab62af7.js.map"
   },
   "entrypoints": [
-    "static/css/main.3e169e08.css",
-    "static/js/main.d1e572c8.js"
+    "static/css/main.9cb3edf2.css",
+    "static/js/main.6ab62af7.js"
   ]
 }
