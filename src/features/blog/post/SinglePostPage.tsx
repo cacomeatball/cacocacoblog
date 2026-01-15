@@ -27,12 +27,12 @@ export function SinglePostPage() {
         .single();
 
       if (error) throw error;
-      if (!data) throw new Error('Post not found');
+      if (!data) throw new Error('Post not found!');
 
       setPost(data);
       setError(null);
     } catch (error: any) {
-      setError(error.message || 'Error fetching post');
+      setError(error.message || 'Error fetching post!');
       setPost(null);
     } finally {
       setLoading(false);
@@ -41,7 +41,7 @@ export function SinglePostPage() {
 
   useEffect(() => {
     if (!id) {
-      setError('Post ID not found');
+      setError('Post ID not found!');
       setLoading(false);
       return;
     }
@@ -96,7 +96,7 @@ export function SinglePostPage() {
     return (
       <div style={{ textAlign: 'center', padding: '2rem' }}>
         <p style={{ color: '#e74c3c', marginBottom: '1rem' }}>Error: {error}</p>
-        <button onClick={handleGoBack} className="btn-primary">
+        <button onClick={handleGoBack} className="btn-goback">
           Back to Posts
         </button>
       </div>
@@ -107,7 +107,7 @@ export function SinglePostPage() {
     return (
       <div style={{ textAlign: 'center', padding: '2rem' }}>
         <p style={{ color: '#64748b', marginBottom: '1rem' }}>Post not found</p>
-        <button onClick={handleGoBack} className="btn-primary">
+        <button onClick={handleGoBack} className="btn-goback">
           Back to Posts
         </button>
       </div>
@@ -118,7 +118,7 @@ export function SinglePostPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
-      <button onClick={handleGoBack} className="btn-secondary" style={{ marginBottom: '2rem' }}>
+      <button onClick={handleGoBack} className="btn-goback" style={{ marginBottom: '2rem' }}>
         ← Back to Posts
       </button>
 
