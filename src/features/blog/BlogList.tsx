@@ -3,7 +3,6 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectPosts, selectLoading, setPosts, removePost, setLoading, setEditingPost, type BlogPost } from './blogSlice';
 import { selectUser } from '../auth/authSlice';
 import { supabase } from '../../lib/supabaseClient';
-import { BlogForm } from './write/BlogForm';
 import { BlogPostComponent } from './BlogPostComponent';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import './bloglist.css';
@@ -13,7 +12,7 @@ export function BlogList() {
   const posts = useAppSelector(selectPosts);
   const loading = useAppSelector(selectLoading);
   const user = useAppSelector(selectUser);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page') || '1');
   const [perPage] = useState(5);
@@ -74,19 +73,6 @@ export function BlogList() {
     }
   };
 
-  const handlePostCreated = () => {
-    setShowForm(false);
-    dispatch(setEditingPost(null));
-    // go to first page and refresh
-    setSearchParams({ page: '1' });
-    fetchPosts(1);
-  };
-
-  const handleCancel = () => {
-    setShowForm(false);
-    dispatch(setEditingPost(null));
-  };
-
   const handleCreateNew = () => {
     dispatch(setEditingPost(null));
     navigate('/write');
@@ -108,10 +94,6 @@ export function BlogList() {
           </button>
         )}
       </div>
-
-      {showForm && (
-        <BlogForm onPostCreated={handlePostCreated} onCancel={handleCancel} />
-      )}
 
       {posts.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '3rem', color: '#64748b' }}>

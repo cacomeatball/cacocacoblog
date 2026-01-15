@@ -20,6 +20,19 @@
     align-items: center;
 }
 
+.coverImg{
+    margin-right: 165px;
+    margin-bottom: 0.5rem;
+}
+
+.writeImgUpload{
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    margin-left: 170px;
+    justify-content: center;
+}
+
 .writeInput{
     font-size: 30px;
     border: none;
@@ -32,8 +45,9 @@
 }
 
 .writeText{
-    font-size: 20px;
-    height: 100vh;
+    font-family: 'Calibri', 'sans-serif';
+    font-size: 18px;
+    height: 40vh;
 }
 
 .writeSubmit{

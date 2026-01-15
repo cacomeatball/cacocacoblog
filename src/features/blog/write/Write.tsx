@@ -121,16 +121,15 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
                     required
                 />
             </div>
-            <div style={{ marginBottom: '1rem' }}>
-              <label htmlFor="image" style={{ display: 'block', marginBottom: '0.5rem' }}>
-                Featured Image:
+            <div className="writeImgUpload">
+              <label className="coverImg" htmlFor="image">
+                Cover image:
               </label>
               <input
                 id="image"
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="blog-form-input"
               />
               {imagePreview && (
                 <div style={{ marginTop: '0.5rem' }}>

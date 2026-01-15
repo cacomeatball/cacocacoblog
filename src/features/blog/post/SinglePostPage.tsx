@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import { selectUser } from '../../auth/authSlice';
 import { supabase } from '../../../lib/supabaseClient';
@@ -10,6 +10,7 @@ import './singlePost.css';
 export function SinglePostPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const [post, setPost] = useState<BlogPost | null>(null);
@@ -72,15 +73,19 @@ export function SinglePostPage() {
 
       if (error) throw error;
 
-      // Navigate back to home after successful deletion
-      navigate('/');
+      // Navigate back to home after successful deletion (preserve page if present)
+      const page = searchParams.get('page');
+      if (page) navigate(`/?page=${page}`);
+      else navigate('/');
     } catch (error: any) {
       alert(`Error deleting post: ${error.message}`);
     }
   };
 
   const handleGoBack = () => {
-    navigate('/');
+    const page = searchParams.get('page');
+    if (page) navigate(`/?page=${page}`);
+    else navigate('/');
   };
 
   if (loading) {
@@ -131,7 +136,7 @@ export function SinglePostPage() {
         />
         )}
 
-        <div className="blog-post-content">
+        <div className="single-post-content">
           {post.content}
         </div>
 

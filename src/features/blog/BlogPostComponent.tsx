@@ -1,7 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../app/hooks';
-import { selectUser } from '../auth/authSlice';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { BlogPost } from './blogSlice';
 import './bloglist.css';
 
@@ -12,51 +10,35 @@ interface BlogPostComponentProps {
 }
 
 export function BlogPostComponent({ post, onEdit, onDelete }: BlogPostComponentProps) {
-  const user = useAppSelector(selectUser);
-  const isAuthor = user?.id === post.user_id;
   const createdAt = new Date(post.created_at).toLocaleDateString();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const currentPage = searchParams.get('page');
 
   const handleTitleClick = () => {
-    navigate(`/post/${post.id}`);
+    const suffix = currentPage ? `?page=${currentPage}` : '';
+    navigate(`/post/${post.id}${suffix}`);
   };
 
   return (
-    <article className="blog-post">
+    <article className="blog-post" onClick={handleTitleClick} style={{ cursor: 'pointer' }}>
       <header>
-        <h2 className='postTitle' onClick={handleTitleClick} style={{ cursor: 'pointer' }}>{post.title}</h2>
+        <h2 className='postTitle'>{post.title}</h2>
         <div className="blog-post-meta">Published on {createdAt}, by {post.username}</div>
       </header>
       
       {post.image_url && (
         <img 
+          className='postImg'
           src={post.image_url} 
           alt={post.title}
-          style={{ width: '100%', maxHeight: '400px', objectFit: 'cover', marginBottom: '1rem' }}
+          style={{}}
         />
       )}
       
       <div className="blog-post-content">
         {post.content}
       </div>
-      
-      {isAuthor && (
-        <footer className='postFooter'>
-          <button onClick={() => onEdit(post)} className="btn-success">
-            <i className="singlePostIcon fa-regular fa-pen-to-square"></i> Edit
-          </button>
-          <button
-            onClick={() => {
-              if (window.confirm('Are you sure you want to delete this post?')) {
-                onDelete(post.id);
-              }
-            }}
-            className="btn-danger"
-          >
-            <i className="singlePostIcon fa-regular fa-trash-can"></i> Delete
-          </button>
-        </footer>
-      )}
     </article>
   );
 }
