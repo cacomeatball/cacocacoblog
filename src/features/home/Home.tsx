@@ -3,12 +3,14 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectSession, setSession, clearSession } from '../auth/authSlice';
 import { BlogList } from '../blog/BlogList';
 import { supabase } from '../../lib/supabaseClient';
+import { useNavigate } from 'react-router-dom';
 import './home.css';
 
 function Home() {
   const session = useAppSelector(selectSession);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check active session
@@ -35,6 +37,10 @@ function Home() {
     }
   };
 
+  const handleLogin = () => {
+    navigate('/login');
+  }
+
   if (loading) {
     return (
       <div className="App">
@@ -48,8 +54,16 @@ function Home() {
       <div className="App">
         <header className="blog-header">
           <h1>cacocacoblog!</h1>
-          <p style={{ margin: 0, opacity: 0.9 }}>Please log in to continue</p>
+          <div className='welcomeMessage'>
+            <span className="welcome-message">Please log in to continue.</span>
+            <button onClick={handleLogin} className="btn-login">
+              Login
+            </button>
+          </div>
         </header>
+        <main className="blog-content">
+          <BlogList />
+        </main>
       </div>
     );
   }
@@ -58,7 +72,7 @@ function Home() {
     <div className="App">
       <header className="blog-header">
         <h1>cacocacoblog!</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div className='welcomeMessage'>
           <span className="welcome-message">Welcome, {session.user?.user_metadata?.username}!</span>
           <button onClick={handleLogout} className="btn-logout">
             Logout

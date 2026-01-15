@@ -45,7 +45,7 @@ function App() {
     <HashRouter>
       <TopBar />
       <Routes>
-        <Route path="/" element={session ? <Home /> : <Login />} />
+        <Route path="/" element={<Home />} />
         <Route path='/write' element={session ? <Write onPostCreated={() => {}} onCancel={() => {}} /> : <Login />} />
         <Route path='/login' element={session ? <Home /> : <Login />}></Route>
       </Routes>

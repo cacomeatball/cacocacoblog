@@ -3,6 +3,14 @@
     flex-direction: column;
 }
 
+.welcomeMessage{
+    display: flex;
+    margin-top: 10px;
+    gap: 15px;
+    flex-direction: column;
+    align-items: center;
+}
+
 .blog-header{
     margin-top: 60px;
     display: flex;
