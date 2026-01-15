@@ -27,7 +27,7 @@ export function BlogPostComponent({ post, onEdit, onDelete }: BlogPostComponentP
       </div>
       
       {isAuthor && (
-        <footer style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+        <footer style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', marginLeft: 20 }}>
           <button onClick={() => onEdit(post)} className="btn-success">
             Edit
           </button>
