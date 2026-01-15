@@ -44,6 +44,7 @@
     font-size: 13px;
     margin-left: 20px;
     color: cadetblue;
+    margin-bottom: 1em;
 }
 
 .postImg{
@@ -51,7 +52,7 @@
      height: 150px;
      object-fit: cover;
      margin-left: 20px;
-     margin-bottom: 1rem;
+     margin-bottom: 0;
 }
 
 .blog-post-content{
