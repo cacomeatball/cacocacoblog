@@ -27,9 +27,9 @@ export function BlogPostComponent({ post, onEdit, onDelete }: BlogPostComponentP
       </div>
       
       {isAuthor && (
-        <footer style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', marginLeft: 20 }}>
+        <footer className='postFooter'>
           <button onClick={() => onEdit(post)} className="btn-success">
-            Edit
+            <i className="singlePostIcon fa-regular fa-pen-to-square"></i> Edit
           </button>
           <button
             onClick={() => {
@@ -39,7 +39,7 @@ export function BlogPostComponent({ post, onEdit, onDelete }: BlogPostComponentP
             }}
             className="btn-danger"
           >
-            Delete
+            <i className="singlePostIcon fa-regular fa-trash-can"></i> Delete
           </button>
         </footer>
       )}
