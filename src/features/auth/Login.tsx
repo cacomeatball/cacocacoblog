@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
+import { useNavigate } from 'react-router-dom';
 import "./login.css";
 
 function showPassword() {
@@ -21,6 +22,7 @@ export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +52,7 @@ export function Login() {
       alert(`Authentication failed!! ${error.message || error.error_description || 'Unknown error'}`);
     } finally {
       setLoading(false);
+      navigate('/');
     }
   };
 
