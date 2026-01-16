@@ -28,11 +28,12 @@ export function CommentList({ postId }: CommentListProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, postId]);
 
-  const fetchPosts = async (pageArg = 1) => {
+  const fetchPosts = async (pageArg?: number) => {
+    const pageToFetch = pageArg ?? page;
     dispatch(setLoading(true));
     try {
-      const start = (pageArg - 1) * perPage;
-      const end = pageArg * perPage - 1;
+      const start = (pageToFetch - 1) * perPage;
+      const end = pageToFetch * perPage - 1;
       const { data, error, count } = await supabase
         .from('comments')
         .select('*', { count: 'exact' })

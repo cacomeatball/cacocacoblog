@@ -4,6 +4,7 @@ import { selectUser } from '../../../auth/authSlice';
 import { selectEditingPost } from './commentSlice';
 import { supabase } from '../../../../lib/supabaseClient';
 import { uploadCommentImage } from '../../../../lib/imageUpload';
+import './commentform.css';
 
 interface CommentFormProps {
   onPostCreated: () => void;
@@ -98,7 +99,15 @@ export function CommentForm({ onPostCreated, onCancel, postId }: CommentFormProp
   return (
     <div className="comment-form">
       <h2>{editingPost ? 'Edit Comment' : 'Create New Comment'}</h2>
-      <div className="writeImgUpload">
+      <form onSubmit={handleSubmit} className="login-form">
+        <textarea
+          className="commentInput blog-form-textarea"
+          placeholder="Write your comment here."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+        />
+        <div className="commentImgUpload">
               <label className="coverImg" htmlFor="image">
                 Image:
               </label>
@@ -114,19 +123,11 @@ export function CommentForm({ onPostCreated, onCancel, postId }: CommentFormProp
                 </div>
               )}
             </div>
-      <form onSubmit={handleSubmit} className="login-form">
-        <textarea
-          className="blog-form-input blog-form-textarea"
-          placeholder="Write your comment here."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        />
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button type="submit" disabled={loading} className="btn-primary">
+          <button type="submit" disabled={loading} >
             {loading ? 'Saving...' : editingPost ? 'Update Comment' : 'Create Comment'}
           </button>
-          <button type="button" onClick={onCancel} className="btn-secondary">
+          <button type="button" onClick={onCancel} >
             Cancel
           </button>
         </div>
