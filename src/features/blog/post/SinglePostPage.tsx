@@ -6,6 +6,7 @@ import { supabase } from '../../../lib/supabaseClient';
 import type { BlogPost } from '../blogSlice';
 import { setEditingPost } from '../blogSlice';
 import './singlePost.css';
+import { CommentList } from './comment/CommentList';
 
 export function SinglePostPage() {
   const { id } = useParams<{ id: string }>();
@@ -154,6 +155,9 @@ export function SinglePostPage() {
             <em>You're either a Guest, or not the author of this post.</em>
           </footer>
         )}
+        <div>
+          <CommentList postId={id!} />
+        </div>
       </article>
     </div>
   );

@@ -1,37 +1,31 @@
-import "./write.css"
+import React , { useState, useEffect } from 'react'
+import { useAppSelector } from '../../../../app/hooks';
+import { selectUser } from '../../../auth/authSlice';
+import { selectEditingPost } from './commentSlice';
+import { supabase } from '../../../../lib/supabaseClient';
+import { uploadCommentImage } from '../../../../lib/imageUpload';
 
-import React, { useState, useEffect } from 'react';
-import { useAppSelector } from '../../../app/hooks';
-import { selectUser } from '../../auth/authSlice';
-import { selectEditingPost } from '../blogSlice';
-import { supabase } from '../../../lib/supabaseClient';
-import { useNavigate } from 'react-router-dom';
-import { uploadBlogImage } from '../../../lib/imageUpload';
-
-interface BlogFormProps {
+interface CommentFormProps {
   onPostCreated: () => void;
   onCancel: () => void;
+  postId: string;
 }
 
-export function Write({ onPostCreated, onCancel }: BlogFormProps) {
+export function CommentForm({ onPostCreated, onCancel, postId }: CommentFormProps) {
   const user = useAppSelector(selectUser);
   const editingPost = useAppSelector(selectEditingPost);
-  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
+  
   useEffect(() => {
     if (editingPost) {
-      setTitle(editingPost.title);
       setContent(editingPost.content);
       setImageUrl(editingPost.image_url || '');
       setImagePreview(editingPost.image_url || '');
     } else {
-      setTitle('');
       setContent('');
       setImageUrl('');
       setImageFile(null);
@@ -62,7 +56,7 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
       // Upload new image if selected
       if (imageFile) {
         console.log('Uploading image:', imageFile.name);
-        finalImageUrl = await uploadBlogImage(imageFile, user.id);
+        finalImageUrl = await uploadCommentImage(imageFile, user.id);
         console.log('Image URL received:', finalImageUrl);
       }
 
@@ -70,25 +64,22 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
         // Update existing post
         console.log('Updating post with image_url:', finalImageUrl);
         const { error } = await supabase
-          .from('posts')
-          .update({ title, content, image_url: finalImageUrl || null })
+          .from('comments')
+          .update({ content, image_url: finalImageUrl || null })
           .eq('id', editingPost.id);
         
         if (error) throw error;
-        navigate(`/post/${editingPost.id}`);
       } else {
         // Create new post
         console.log('Creating post with image_url:', finalImageUrl);
         const { error } = await supabase
-          .from('posts')
-          .insert([{ title, content, user_id: user.id, username: user.user_metadata.username, image_url: finalImageUrl || null }]);
+          .from('comments')
+          .insert([{ content, user_id: user.id, username: user.user_metadata.username, image_url: finalImageUrl || null, post_id: postId }]);
         
         if (error) throw error;
-        navigate('/');
       }
       
       onPostCreated();
-      setTitle('');
       setContent('');
       setImageFile(null);
       setImageUrl('');
@@ -101,30 +92,15 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
   };
 
   if (!user) {
-    return <div>Please log in to create posts.</div>;
+    return <div>Please log in to comment.</div>;
   }
+  
   return (
-    <div className="write">
-        <img
-            className="writeImg" 
-            src="https://info-ongeki.sega.jp/wp-content/uploads/2022/07/d8749dbe9c25cef252198448aa20f742.jpg" 
-            alt="" />
-        <form onSubmit={handleSubmit} className="writeForm">
-            <div className="writeFormGroup">
-                <input type="file" id="fileInput" style={{display:"none"}} />
-                <input 
-                    type="text" 
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="writeInput" 
-                    autoFocus={true}
-                    required
-                />
-            </div>
-            <div className="writeImgUpload">
+    <div className="comment-form">
+      <h2>{editingPost ? 'Edit Comment' : 'Create New Comment'}</h2>
+      <div className="writeImgUpload">
               <label className="coverImg" htmlFor="image">
-                Cover image:
+                Image:
               </label>
               <input
                 id="image"
@@ -138,20 +114,23 @@ export function Write({ onPostCreated, onCancel }: BlogFormProps) {
                 </div>
               )}
             </div>
-            <div className="writeFormGroup">
-                <textarea 
-                    placeholder="Put your thoughts here." 
-                    typeof="text" 
-                    className="writeInput writeText"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    required
-                />
-            </div>
-            <button className="writeSubmit" disabled={loading}>
-                {loading ? 'Please wait...' : editingPost ? 'Update Post' : 'Publish'}
-            </button>
-        </form>
+      <form onSubmit={handleSubmit} className="login-form">
+        <textarea
+          className="blog-form-input blog-form-textarea"
+          placeholder="Write your comment here."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+        />
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button type="submit" disabled={loading} className="btn-primary">
+            {loading ? 'Saving...' : editingPost ? 'Update Comment' : 'Create Comment'}
+          </button>
+          <button type="button" onClick={onCancel} className="btn-secondary">
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   )
 }
