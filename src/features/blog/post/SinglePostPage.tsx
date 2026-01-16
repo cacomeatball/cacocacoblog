@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import { selectUser } from '../../auth/authSlice';
 import { supabase } from '../../../lib/supabaseClient';
@@ -11,7 +11,6 @@ import { CommentList } from './comment/CommentList';
 export function SinglePostPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const [post, setPost] = useState<BlogPost | null>(null);
@@ -74,19 +73,11 @@ export function SinglePostPage() {
 
       if (error) throw error;
 
-      // Navigate back to home after successful deletion (preserve page if present)
-      const page = searchParams.get('page');
-      if (page) navigate(`/?page=${page}`);
-      else navigate('/');
+      // Navigate back with history
+      navigate(-1);
     } catch (error: any) {
       alert(`Error deleting post: ${error.message}`);
     }
-  };
-
-  const handleGoBack = () => {
-    const page = searchParams.get('page');
-    if (page) navigate(`/?page=${page}`);
-    else navigate('/');
   };
 
   if (loading) {
@@ -97,9 +88,6 @@ export function SinglePostPage() {
     return (
       <div style={{ textAlign: 'center', padding: '2rem' }}>
         <p style={{ color: '#e74c3c', marginBottom: '1rem' }}>Error: {error}</p>
-        <button onClick={handleGoBack} className="btn-goback">
-          Back to Posts
-        </button>
       </div>
     );
   }
@@ -108,9 +96,6 @@ export function SinglePostPage() {
     return (
       <div style={{ textAlign: 'center', padding: '2rem' }}>
         <p style={{ color: '#64748b', marginBottom: '1rem' }}>Post not found</p>
-        <button onClick={handleGoBack} className="btn-goback">
-          Back to Posts
-        </button>
       </div>
     );
   }
@@ -119,9 +104,6 @@ export function SinglePostPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
-      <button onClick={handleGoBack} className="btn-goback">
-        ← Back to Posts
-      </button>
 
       <article className="blog-post">
         <header>

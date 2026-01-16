@@ -18,7 +18,7 @@ export function CommentList({ postId }: CommentListProps) {
   const user = useAppSelector(selectUser);
   const [showForm, setShowForm] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = Number(searchParams.get('page') || '1');
+  const page = Number(searchParams.get('commentPage') || '1');
   const [perPage] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -28,12 +28,11 @@ export function CommentList({ postId }: CommentListProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, postId]);
 
-  const fetchPosts = async (pageArg?: number) => {
-    const pageToFetch = pageArg ?? page;
+  const fetchPosts = async (pageArg = 1) => {
     dispatch(setLoading(true));
     try {
-      const start = (pageToFetch - 1) * perPage;
-      const end = pageToFetch * perPage - 1;
+      const start = (pageArg - 1) * perPage;
+      const end = pageArg * perPage - 1;
       const { data, error, count } = await supabase
         .from('comments')
         .select('*', { count: 'exact' })
@@ -71,7 +70,7 @@ export function CommentList({ postId }: CommentListProps) {
       const newTotal = Math.max(0, totalCount - 1);
       const newTotalPages = Math.max(1, Math.ceil(newTotal / perPage));
       const newPage = Math.min(page, newTotalPages);
-      setSearchParams({ page: String(newPage) });
+      setSearchParams({ commentPage: String(newPage) });
       fetchPosts(newPage);
     } catch (error: any) {
       alert(`Error deleting post: ${error.message}`);
@@ -134,7 +133,7 @@ export function CommentList({ postId }: CommentListProps) {
           </div>
 
           <nav className="pagination" aria-label="Pagination">
-            <button className="page-btn" onClick={() => setSearchParams({ page: String(Math.max(1, page - 1)) })} disabled={page === 1}>
+            <button className="page-btn" onClick={() => setSearchParams({ commentPage: String(Math.max(1, page - 1)) })} disabled={page === 1}>
               Prev
             </button>
 
@@ -144,7 +143,7 @@ export function CommentList({ postId }: CommentListProps) {
                 <button
                   key={p}
                   className={`page-btn ${p === page ? 'active' : ''}`}
-                  onClick={() => setSearchParams({ page: String(p) })}
+                  onClick={() => setSearchParams({ commentPage: String(p) })}
                   aria-current={p === page ? 'page' : undefined}
                 >
                   {p}
@@ -152,7 +151,7 @@ export function CommentList({ postId }: CommentListProps) {
               );
             })}
 
-            <button className="page-btn" onClick={() => setSearchParams({ page: String(Math.min(totalPages, page + 1)) })} disabled={page >= totalPages}>
+            <button className="page-btn" onClick={() => setSearchParams({ commentPage: String(Math.min(totalPages, page + 1)) })} disabled={page >= totalPages}>
               Next
             </button>
           </nav>
